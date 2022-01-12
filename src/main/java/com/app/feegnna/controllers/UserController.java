@@ -38,6 +38,7 @@ public class UserController {
             user1.setNom(user.getNom());
             user1.setAdresse(user.getAdresse());
             user1.setTelephone(user.getTelephone());
+            userRepository.save(user1);
             return ResponseEntity.ok().body(user1);
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
