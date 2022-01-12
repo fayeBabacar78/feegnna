@@ -33,11 +33,19 @@ public class UserController {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<User> optionalUser = userRepository.findByUsername(userDetails.getUsername());
         return optionalUser.map(user1 -> {
-            user1.setUsername(user.getUsername());
-            user1.setPrenom(user.getPrenom());
-            user1.setNom(user.getNom());
-            user1.setAdresse(user.getAdresse());
-            user1.setTelephone(user.getTelephone());
+            if(!user.getPrenom().isEmpty()) {
+                user1.setPrenom(user.getPrenom());
+            }
+            if(!user.getNom().isEmpty()) {
+                user1.setNom(user.getNom());
+            }
+            if(!user.getTelephone().isEmpty()) {
+                user1.setTelephone(user.getTelephone());
+            }
+            if(!user.getAdresse().isEmpty()) {
+                user1.setAdresse(user.getAdresse());
+            }
+
             userRepository.save(user1);
             return ResponseEntity.ok().body(user1);
         }).orElseGet(() -> ResponseEntity.notFound().build());
