@@ -1,7 +1,9 @@
 package com.app.feegnna.controllers;
 
+import com.app.feegnna.model.Category;
 import com.app.feegnna.model.Item;
 import com.app.feegnna.model.User;
+import com.app.feegnna.repository.CategoryRepository;
 import com.app.feegnna.repository.ItemRepository;
 import com.app.feegnna.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -20,10 +22,12 @@ public class ItemController {
 
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
 
-    public ItemController(ItemRepository itemRepository, UserRepository userRepository) {
+    public ItemController(ItemRepository itemRepository, UserRepository userRepository, CategoryRepository categoryRepository) {
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @GetMapping("/list")
@@ -47,6 +51,15 @@ public class ItemController {
         Optional<User> optionalUser = userRepository.findByUsername(user.getUsername());
         return optionalUser.map(user1 -> ResponseEntity.ok().body(itemRepository.findByClaimedByName(user1.getPrenom() + " " + user1.getNom())))
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/category/{id}")
+    public ResponseEntity<List<Item>> getItemsByCategory(@PathVariable(name = "id") Long id) {
+        Optional<Category> optionalCategory = categoryRepository.findById(id);
+        return optionalCategory.map(category -> {
+            List<Item> items = itemRepository.findByClaimedFalseAndCategory(category);
+            return ResponseEntity.ok().body(items);
+        }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/")
