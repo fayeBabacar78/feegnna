@@ -49,7 +49,7 @@ public class Item {
 
     @Getter
     @Setter
-    @Column(name = "imageUrl", nullable = false)
+    @Column(name = "image_url")
     private String imageUrl;
 
     @Getter
