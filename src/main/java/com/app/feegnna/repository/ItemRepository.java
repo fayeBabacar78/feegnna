@@ -10,7 +10,5 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findByClaimedTrue(); // claimed items
     List<Item> findByClaimedFalse(); // unclaimed items
     List<Item> findByClaimedByName(String name); // items claimed by the logged user
-    List<Item> findByClaimedFalseAndCategory(Category category); // items claimed by the logged user
-
-
+    List<Item> findByCategory(Category category);
 }

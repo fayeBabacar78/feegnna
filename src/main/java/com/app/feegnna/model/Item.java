@@ -49,6 +49,11 @@ public class Item {
 
     @Getter
     @Setter
+    @Column(name = "imageUrl", nullable = false)
+    private String imageUrl;
+
+    @Getter
+    @Setter
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "found_at", nullable = false)
     private Date foundAt;

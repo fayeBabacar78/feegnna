@@ -57,7 +57,7 @@ public class ItemController {
     public ResponseEntity<List<Item>> getItemsByCategory(@PathVariable(name = "id") Long id) {
         Optional<Category> optionalCategory = categoryRepository.findById(id);
         return optionalCategory.map(category -> {
-            List<Item> items = itemRepository.findByClaimedFalseAndCategory(category);
+            List<Item> items = itemRepository.findByCategory(category);
             return ResponseEntity.ok().body(items);
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
